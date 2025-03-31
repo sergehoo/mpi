@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Introuvable | Master Patient Index</title>
+    <meta name="description" content="La page que vous recherchez n'existe pas ou a été déplacée">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --dark: #202124;
+            --darker: #3c4043;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow-x: hidden;
+            background-color: var(--lighter);
+            color: var(--darker);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tech Pattern Background */
+        .tech-pattern {
+            background-color: var(--lighter);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(66, 133, 244, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(234, 67, 53, 0.1) 0%, transparent 50%);
+            background-size: 800px 800px;
+        }
+
+        /* Navbar */
+        .navbar {
+            transition: all 0.3s ease;
+            padding: 20px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Error Section */
+        .error-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{% static "images/digital-pattern.png" %}') repeat;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .error-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-image {
+            max-width: 400px;
+            margin: 0 auto 40px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Glow Effects */
+        .glow-on-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glow-on-hover:hover {
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark) 0%, #121315 100%);
+            color: white;
+            padding: 40px 0 20px;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{% static "images/footer-pattern.png" %}') repeat;
+            opacity: 0.05;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-image {
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="tech-pattern">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'images/logo-AFRIQ-CONSULTING.png' %}" alt="AfriqConsulting" height="40" class="me-2">
+                <span class="fw-bold">Master Patient Index</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#features">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#benefits">Avantages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary glow-on-hover" href="/admin/login/">
+                            <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Error Section -->
+    <section class="error-section">
+        <div class="container">
+            <div class="error-content" data-aos="zoom-in">
+                <div class="error-code animate__animated animate__fadeIn">404</div>
+                
+                <img src="{% static 'images/404-illustration.svg' %}" alt="Page introuvable" class="error-image animate__animated animate__fadeIn animate__delay-1s">
+                
+                <h1 class="display-5 fw-bold mb-3 animate__animated animate__fadeIn animate__delay-1s">Page Introuvable</h1>
+                
+                <p class="lead mb-4 animate__animated animate__fadeIn animate__delay-1s">
+                    La page que vous recherchez n'existe pas ou a été déplacée.
+                    <br>
+                    Voici quelques liens utiles à la place :
+                </p>
+                
+                <div class="d-flex justify-content-center gap-3 mt-4 animate__animated animate__fadeIn animate__delay-2s">
+                    <a href="/" class="btn btn-primary btn-lg px-4 glow-on-hover">
+                        <i class="fas fa-home me-2"></i>Page d'accueil
+                    </a>
+                    <a href="/#contact" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="fas fa-envelope me-2"></i>Nous contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="{% static 'images/afriqconsulting-logo-white.png' %}" alt="AfriqConsulting" height="40">
+                    <p class="mt-3 small">Spécialistes en solutions digitales pour le secteur de la santé en Afrique.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Solution</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="/#features">Fonctionnalités</a></li>
+                        <li class="mb-2"><a href="/#benefits">Avantages</a></li>
+                        <li class="mb-2"><a href="/#integration">Intégration</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Ressources</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Documentation</a></li>
+                        <li class="mb-2"><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5 class="text-uppercase mb-4">Légal</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">CGU</a></li>
+                        <li class="mb-2"><a href="#">Confidentialité</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="text-uppercase mb-4">Langue</h5>
+                    <select class="form-select form-select-sm bg-dark text-white border-secondary">
+                        <option>Français</option>
+                        <option>English</option>
+                    </select>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 AfriqConsulting. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="small mb-0">Version 2.1.0</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Add animation to error code
+        const errorCode = document.querySelector('.error-code');
+        if (errorCode) {
+            setTimeout(() => {
+                errorCode.classList.add('animate__rubberBand');
+            }, 500);
+
+            errorCode.addEventListener('animationend', () => {
+                errorCode.classList.remove('animate__rubberBand');
+            });
+        }
+    </script>
+</body>
+</html>
