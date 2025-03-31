@@ -11,7 +11,6 @@ services:
       - .:/mpi-app/
       - static_volume:/mpi-app/staticfiles
       - media_volume:/mpi-app/mediafiles
-      - logs_volume:/smitci-app/static/logs
     env_file:
       - ./.env
     restart: always
