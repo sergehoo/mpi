@@ -32,11 +32,11 @@ ENV C_INCLUDE_PATH=/usr/include/gdal
 ENV GDAL_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/libgdal.so
 
 # Copy the requirements.txt and install Python dependencies
-COPY requirements.txt /rage-app/requirements.txt
+COPY requirements.txt /mpi-app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application
-COPY . /rage-app/
+COPY . /mpi-app/
 
 # Expose port 8000
 EXPOSE 8000
