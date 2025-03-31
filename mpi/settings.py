@@ -31,7 +31,7 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
 
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='localhost').split(',')
-
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
 SECURE_HSTS_SECONDS = 31536000  # 1 an
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -41,6 +41,7 @@ CSRF_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+
 
 
 # Application definition
