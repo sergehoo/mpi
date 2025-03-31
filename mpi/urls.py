@@ -9,7 +9,7 @@ from patient.apis.views import PlatformTokenView
 from patient.views import Landing
 
 urlpatterns = [
-                  path('admin/', admin.site.urls),
+                  path('ac/mpi/ogah/', admin.site.urls),
                   path('apis-auth/', include('rest_framework.urls')),
                   path('mpi/', include('patient.apis.urls')),
 
