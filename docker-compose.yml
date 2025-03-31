@@ -1,0 +1,44 @@
+
+services:
+
+  rageweb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1524:8000  # port du server : port de l'application
+    volumes:
+      - .:/rage-app/
+    env_file:
+      - ./.env
+    restart: always
+    depends_on:
+      - rageDB
+
+  rageDB:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 2058:8080
+    networks:
+      - rage_default
+
+networks:
+  rage_default:
+
+volumes:
+  pgdata:
+    driver: local
+  static_volume:
+  media_volume:
