@@ -9,6 +9,9 @@ services:
       - 1101:8000  # port du server : port de l'application
     volumes:
       - .:/mpi-app/
+      - static_volume:/mpi-app/staticfiles
+      - media_volume:/mpi-app/mediafiles
+      - logs_volume:/smitci-app/static/logs
     env_file:
       - ./.env
     restart: always
