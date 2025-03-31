@@ -1,0 +1,1290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Master Patient Index | AfriqConsulting</title>
+    <meta name="description"
+          content="Solution MPI pour le système de santé ivoirien - Identifiant patient unique et sécurisé">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --dark: #202124;
+            --darker: #3c4043;
+            --success: #34a853;
+            --info: #4285f4;
+            --warning: #fbbc05;
+            --danger: #ea4335;
+            --purple: #9e69af;
+            --teal: #25c2a0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow-x: hidden;
+            background-color: var(--lighter);
+            color: var(--darker);
+        }
+
+        /* Tech Pattern Background */
+        .tech-pattern {
+            background-color: var(--warning);
+            background-image: radial-gradient(circle at 25% 25%, rgba(66, 133, 244, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(234, 67, 53, 0.1) 0%, transparent 50%);
+            background-size: 800px 800px;
+        }
+
+        /* Navbar */
+        .navbar {
+            transition: all 0.3s ease;
+            padding: 20px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--darker) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%),
+            url('{% static "images/digital-health-pattern.jpg" %}');
+            background-size: cover, 600px;
+            position: relative;
+            padding: 150px 0 100px;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 70% 30%, rgba(66, 133, 244, 0.08) 0%, transparent 30%),
+            radial-gradient(circle at 30% 70%, rgba(52, 168, 83, 0.08) 0%, transparent 30%);
+            animation: rotateBackground 120s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateBackground {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-image-container {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .hero-image {
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotateX(0) rotateY(0);
+            }
+            50% {
+                transform: translateY(-20px) rotateX(5deg) rotateY(5deg);
+            }
+            100% {
+                transform: translateY(0) rotateX(0) rotateY(0);
+            }
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: white;
+            height: 100%;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            font-size: 32px;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--teal) 100%);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(66, 133, 244, 0.3);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.9) 0%, rgba(52, 168, 83, 0.9) 100%),
+            url('{% static "images/digital-pattern.png" %}');
+            background-size: cover, 300px;
+            position: relative;
+            padding: 100px 0;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{% static "images/dot-pattern.png" %}') repeat;
+            opacity: 0.1;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 60px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            height: 100%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark) 0%, #121315 100%);
+            color: white;
+            padding: 80px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{% static "images/footer-pattern.png" %}') repeat;
+            opacity: 0.05;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .floating-element-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation: floatElement 15s ease-in-out infinite;
+        }
+
+        .floating-element-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: 10%;
+            right: 10%;
+            animation: floatElement 20s ease-in-out infinite;
+        }
+
+        @keyframes floatElement {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(50px, 50px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* Glow Effects */
+        .glow-on-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glow-on-hover:hover {
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.3);
+        }
+
+        /* Section Headings */
+        .section-heading {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 120px 0 80px;
+                text-align: center;
+            }
+
+            .display-4 {
+                font-size: 2.5rem;
+            }
+
+            .stat-number {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="tech-pattern">
+<!-- Floating Background Elements -->
+<div class="floating-element floating-element-1"></div>
+<div class="floating-element floating-element-2"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{% static 'images/logo-AFRIQ-CONSULTING.png' %}" alt="AfriqConsulting" height="40" class="me-2">
+            <span class="fw-bold">MPI</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">Fonctionnalités</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#benefits">Avantages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#integration">Intégration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-primary glow-on-hover" href="#">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">Master Patient Index</h1>
+                <p class="lead mb-4 animate__animated animate__fadeIn animate__delay-1s">
+                    La solution unifiée de gestion des identités patients pour le système de santé ivoirien
+                </p>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">
+                    Développé par <strong>AfriqConsulting</strong> pour harmoniser et sécuriser les données patients à
+                    l'échelle nationale
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#contact"
+                       class="btn btn-primary btn-lg px-4 animate__animated animate__fadeInUp animate__delay-2s glow-on-hover">
+                        <i class="fas fa-calendar-check me-2"></i>Demander une démo
+                    </a>
+                    <a href="#features"
+                       class="btn btn-outline-primary btn-lg px-4 animate__animated animate__fadeInUp animate__delay-2s">
+                        <i class="fas fa-search me-2"></i>En savoir plus
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 animate__animated animate__fadeIn animate__delay-1s" data-aos="fade-left"
+                 data-aos-delay="200">
+                <div class="hero-image-container mt-5 mt-lg-0">
+                    <img src="{% static 'images/Master-Patient-Index.png' %}" alt="Interface MPI"
+                         class="hero-image img-fluid rounded shadow-lg">
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;">
+                        <div class="rounded-lg w-100 h-100"
+                             style="background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(52, 168, 83, 0.2) 100%); filter: blur(20px);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section text-white text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 stat-item" data-aos="fade-up">
+                <div class="stat-number" data-count="250">0</div>
+                <p>Établissements connectés</p>
+                <i class="fas fa-hospital fa-2x mt-3 opacity-50"></i>
+            </div>
+            <div class="col-md-3 stat-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number" data-count="5000000">0</div>
+                <p>Patients enregistrés</p>
+                <i class="fas fa-users fa-2x mt-3 opacity-50"></i>
+            </div>
+            <div class="col-md-3 stat-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number" data-count="99">0</div>
+                <p>% Disponibilité</p>
+                <i class="fas fa-clock fa-2x mt-3 opacity-50"></i>
+            </div>
+            <div class="col-md-3 stat-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number" data-count="24">0</div>
+                <p>Heures de support</p>
+                <i class="fas fa-headset fa-2x mt-3 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold section-heading">Fonctionnalités Clés</h2>
+            <p class="lead text-muted">Découvrez les capacités puissantes de notre solution MPI</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h5>Identifiant Patient Unique (UPI)</h5>
+                    <p class="text-muted">Attribution d'un UUID unique à chaque patient pour une identification sans
+                        ambiguïté à travers tout le système de santé.</p>
+                    <img src="{% static 'images/usuid.png' %}" alt="Identifiant Unique"
+                         class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h5>Interopérabilité</h5>
+                    <p class="text-muted">Connectez facilement différentes plateformes (Laboratoire, Surveillance,
+                        Hospitalisation) via des API sécurisées.</p>
+                    <img src="{% static 'images/interop.png' %}" alt="Interopérabilité"
+                         class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5>Sécurité Renforcée</h5>
+                    <p class="text-muted">Clés API uniques par plateforme, contrôle d'accès granulaire et audit complet
+                        des activités.</p>
+                    <img src="{% static 'images/secur.png' %}" alt="Sécurité" class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h5>Recherche Avancée</h5>
+                    <p class="text-muted">Trouvez rapidement les patients grâce à des critères multiples (nom, prénom,
+                        date de naissance, contact).</p>
+                    <img src="{% static 'images/search.png' %}" alt="Recherche" class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h5>Mises à Jour en Temps Réel</h5>
+                    <p class="text-muted">Webhooks pour notifier les systèmes connectés des modifications importantes
+                        des données patients.</p>
+                    <img src="{% static 'images/update.png' %}" alt="Temps Réel" class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5>Tableau de Bord Complet</h5>
+                    <p class="text-muted">Visualisez les statistiques d'utilisation et suivez les performances du
+                        système grâce à des rapports détaillés.</p>
+                    <img src="{% static 'images/dash.png' %}" alt="Tableau de Bord" class="img-fluid mt-3 rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section id="benefits" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold section-heading">Avantages pour le Système de Santé</h2>
+            <p class="lead text-muted">Comment notre solution MPI transforme la gestion des données patients</p>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="pe-lg-5">
+                    <div class="d-flex mb-4">
+                        <div class="me-4 text-primary">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5>Élimination des Doublons</h5>
+                            <p class="text-muted mb-0">Réduction des erreurs médicales grâce à une identification unique
+                                et fiable de chaque patient.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-4 text-primary">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5>Optimisation des Ressources</h5>
+                            <p class="text-muted mb-0">Gain de temps pour le personnel soignant et réduction des coûts
+                                administratifs.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-4 text-primary">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5>Continuité des Soins</h5>
+                            <p class="text-muted mb-0">Accès complet au dossier patient quel que soit le point d'entrée
+                                dans le système de santé.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="me-4 text-primary">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5>Conformité RGPD</h5>
+                            <p class="text-muted mb-0">Solution conçue pour respecter les réglementations sur la
+                                protection des données personnelles.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <img src="{% static 'images/flowdiagrammcase.png' %}" alt="Avantages MPI"
+                             class="img-fluid rounded ">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
+                <div class="card border-0 shadow-lg glow-on-hover">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Cas d'Usage en Côte d'Ivoire</h4>
+
+                        <div class="d-flex mb-3">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded p-2 me-3">
+                                <i class="fas fa-hospital"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Hôpitaux et Cliniques</h6>
+                                <p class="small text-muted mb-0">Gestion centralisée des dossiers patients avec
+                                    historique complet des consultations.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <div class="bg-success bg-opacity-10 text-success rounded p-2 me-3">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Laboratoires d'Analyses</h6>
+                                <p class="small text-muted mb-0">Corrélation automatique des résultats avec le bon
+                                    dossier patient.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <div class="bg-info bg-opacity-10 text-info rounded p-2 me-3">
+                                <i class="fas fa-syringe"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Programmes de Vaccination</h6>
+                                <p class="small text-muted mb-0">Suivi précis des campagnes de vaccination à l'échelle
+                                    nationale.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <div class="bg-warning bg-opacity-10 text-warning rounded p-2 me-3">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Santé Publique</h6>
+                                <p class="small text-muted mb-0">Données fiables pour les analyses épidémiologiques et
+                                    la prise de décision.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="bg-purple bg-opacity-10 text-purple rounded p-2 me-3">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Applications Mobiles</h6>
+                                <p class="small text-muted mb-0">Accès sécurisé aux dossiers médicaux via des
+                                    applications pour professionnels de santé.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <img src="{% static 'images/runtime.gif' %}" alt="Diagramme Cas d'Usage"
+                                 class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Integration Section -->
+<section id="integration" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold section-heading">Intégration Technique</h2>
+            <p class="lead text-muted">Connectez facilement vos systèmes existants</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="card h-100 border-0 shadow-sm glow-on-hover">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">API RESTful Sécurisée</h4>
+                        <p>Notre API moderne permet une intégration aisée avec tous vos systèmes :</p>
+
+                        <div class="mb-4">
+                            <h6 class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary me-2">POST</span>
+                                <code>/api/patients/</code>
+                            </h6>
+                            <div class="bg-dark text-light p-3 rounded">
+                                    <pre class="mb-0 text-white">{
+    "nom": "Kouakou",
+    "prenoms": "Jean Paul",
+    "date_naissance": "1985-05-15",
+    "contact": "+2250701234567"
+}</pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="d-flex align-items-center mb-3">
+                                <span class="badge bg-success me-2">GET</span>
+                                <code>/api/patients/?search=Kouakou</code>
+                            </h6>
+                            <div class="bg-dark text-light p-3 rounded">
+                                    <pre class="mb-0 text-white">{
+    "count": 1,
+    "results": [
+        {
+            "upi": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+            "nom": "Kouakou",
+            "prenoms": "Jean Paul",
+            ...
+        }
+    ]
+}</pre>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <img src="{% static 'images/apishem.png' %}" alt="Intégration API"
+                                 class="img-fluid rounded">
+                        </div>
+
+                        <p class="small text-muted mt-3">Documentation API complète disponible après connexion.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="card h-100 border-0 shadow-sm glow-on-hover">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Gestion des Plateformes</h4>
+                        <p>Créez et gérez facilement les accès pour chaque système connecté :</p>
+
+                        <div class="mb-4">
+                            <h6>Modèle Platform</h6>
+                            <div class="bg-light p-3 rounded">
+                                    <pre class="mb-0">class Platform(models.Model):
+    name = models.CharField(max_length=255)
+    api_key = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    webhook_url = models.URLField(null=True)</pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6>Flux de Données</h6>
+                            <img src="{% static 'images/mpimiddler.png' %}" alt="Flux de données MPI"
+                                 class="img-fluid rounded">
+                        </div>
+
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Support technique</strong> : Notre équipe vous accompagne dans l'intégration.
+                        </div>
+
+                        <div class="mt-4">
+                            <img src="{% static 'images/architchflow.png' %}" alt="Stack Technologique"
+                                 class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold section-heading">Témoignages</h2>
+            <p class="lead text-muted">Ce que disent nos partenaires</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="{% static 'images/testimonial1.jpg' %}" alt="Dr. Kouamé" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">Dr. Jean Kouamé</h5>
+                            <small class="text-muted">Directeur, CHU de Cocody</small>
+                        </div>
+                    </div>
+                    <p class="mb-0">"La solution MPI a révolutionné notre gestion des dossiers patients, réduisant les
+                        erreurs de 75% et améliorant l'efficacité de notre personnel."</p>
+                    <div class="rating mt-3 text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="{% static 'images/testimonial2.jpg' %}" alt="Mme. Diallo"
+                             class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">Mme. Aminata Diallo</h5>
+                            <small class="text-muted">Responsable IT, Laboratoire Bioclinic</small>
+                        </div>
+                    </div>
+                    <p class="mb-0">"L'intégration avec notre système existant a été fluide grâce à l'API bien
+                        documentée et au support réactif de l'équipe AfriqConsulting."</p>
+                    <div class="rating mt-3 text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="{% static 'images/testimonial3.jpg' %}" alt="Dr. Yao" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">Dr. Paul Yao</h5>
+                            <small class="text-muted">Ministère de la Santé</small>
+                        </div>
+                    </div>
+                    <p class="mb-0">"Le Master Patient Index est un pilier essentiel de notre stratégie de santé
+                        numérique nationale, offrant une vue unifiée des patients à travers le pays."</p>
+                    <div class="rating mt-3 text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+              <div>
+                    <h4 class="mb-0 text-muted mb-5">Ils nous font confiance</h4>
+                </div>
+            <div class="d-flex justify-content-center align-items-center bg-light">
+                
+                 <div class="me-3">
+                    <img src="{% static 'images/logoMSHPCMU.png' %}" alt="Partenaires" class="img-fluid"
+                         style="max-height: 80px;">
+                </div>
+                <div class="me-3">
+                    <img src="{% static 'images/logoCHUtreichvile.png' %}" alt="Partenaires" class="img-fluid"
+                         style="max-height: 80px;">
+                </div>
+                 <div class="me-3">
+                    <img src="{% static 'images/logo_ipci_black_jpg.png' %}" alt="Partenaires" class="img-fluid"
+                         style="max-height: 80px;">
+                </div>
+                <div class="me-3">
+                    <img src="{% static 'images/logo-001_0.png' %}" alt="Partenaires" class="img-fluid"
+                         style="max-height: 80px;">
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 bg-primary text-white position-relative">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center" data-aos="fade-up">
+                <h2 class="fw-bold mb-4">Intéressé par notre solution MPI ?</h2>
+                <p class="lead mb-5">Contactez l'équipe AfriqConsulting pour une démonstration ou une mise en œuvre dans
+                    votre institution.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="contact-form p-4 p-md-5">
+                    <form id="contactForm" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nom complet</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="institution" class="form-label">Institution/Organisation</label>
+                            <input type="text" class="form-control" id="institution" name="institution" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-light btn-lg glow-on-hover">
+                                <span id="submitText">Envoyer la demande</span>
+                                <span id="submitSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-5 mt-lg-0" data-aos="fade-left">
+                <div class="card border-0 h-100 bg-white bg-opacity-10">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Coordonnées</h4>
+
+                        <div class="d-flex mb-4">
+                            <div class="bg-white bg-opacity-10 text-white rounded p-2 me-3">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">AfriqConsulting</h6>
+                                <p class="small text-white-70 mb-0">Riviera Les triangles, Abidjan<br>Côte d'Ivoire</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-4">
+                            <div class="bg-white bg-opacity-10 text-white rounded p-2 me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Email</h6>
+                                <p class="small text-white-70 mb-0">contact@afriqconsulting.com<br>support-mpi@afriqconsulting.com
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-4">
+                            <div class="bg-white bg-opacity-10 text-white rounded p-2 me-3">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Téléphone</h6>
+                                <p class="small text-white-70 mb-0">+225 27 22 123 456<br>+225 05 07 89 10 11</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="bg-white bg-opacity-10 text-white rounded p-2 me-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Heures d'Ouverture</h6>
+                                <p class="small text-white-70 mb-0">Lundi - Vendredi<br>8h00 - 18h00</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 bg-white-50">
+
+                        <h6 class="mb-3">Suivez-nous</h6>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="text-white"><i class="fab fa-linkedin fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-twitter fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-facebook fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Demo CTA Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center" data-aos="fade-up">
+                <h2 class="fw-bold mb-4">Prêt à transformer votre gestion des données patients ?</h2>
+                <p class="lead mb-5">Découvrez notre solution MPI en action avec une démonstration personnalisée.</p>
+                <a href="#contact" class="btn btn-primary btn-lg px-5 glow-on-hover">
+                    <i class="fas fa-play-circle me-2"></i>Voir une démo
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container position-relative">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <img src="{% static 'images/afriqconsulting-logo-white.png' %}" alt="AfriqConsulting" height="40">
+                <p class="mt-3 small">Spécialistes en solutions digitales pour le secteur de la santé en Afrique.</p>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">Solution</h5>
+                <ul class="list-unstyled footer-links">
+                    <li class="mb-2"><a href="#features">Fonctionnalités</a></li>
+                    <li class="mb-2"><a href="#benefits">Avantages</a></li>
+                    <li class="mb-2"><a href="#integration">Intégration</a></li>
+                    <li><a href="#">Tarifs</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">Ressources</h5>
+                <ul class="list-unstyled footer-links">
+                    <li class="mb-2"><a href="#">Documentation</a></li>
+                    <li class="mb-2"><a href="#">API</a></li>
+                    <li class="mb-2"><a href="#">FAQ</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                <h5 class="text-uppercase mb-4">Légal</h5>
+                <ul class="list-unstyled footer-links">
+                    <li class="mb-2"><a href="#">CGU</a></li>
+                    <li class="mb-2"><a href="#">Confidentialité</a></li>
+                    <li class="mb-2"><a href="#">Sécurité</a></li>
+                    <li><a href="#">RGPD</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2">
+                <h5 class="text-uppercase mb-4">Langue</h5>
+                <select class="form-select form-select-sm bg-dark text-white border-secondary">
+                    <option>Français</option>
+                    <option>English</option>
+                </select>
+            </div>
+        </div>
+        <hr class="my-4 bg-secondary">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="small mb-0">&copy; {% now "Y" %} AfriqConsulting. Tous droits réservés.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="small mb-0">Version 1.3.0</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top Button -->
+<a href="#" class="btn btn-primary btn-lg back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function () {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Back to top button
+    const backToTopButton = document.getElementById('backToTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 300) {
+            backToTopButton.style.display = 'block';
+            backToTopButton.style.opacity = '1';
+        } else {
+            backToTopButton.style.opacity = '0';
+            setTimeout(() => {
+                if (window.scrollY <= 300) {
+                    backToTopButton.style.display = 'none';
+                }
+            }, 300);
+        }
+    });
+
+    backToTopButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Animate stats counter
+    function animateStats() {
+        const statItems = document.querySelectorAll('.stat-item');
+        statItems.forEach(item => {
+            const numberElement = item.querySelector('.stat-number');
+            const target = parseInt(numberElement.getAttribute('data-count'));
+            let count = 0;
+            const duration = 2000; // Animation duration in ms
+            const increment = target / (duration / 16); // 60fps
+
+            const updateCount = () => {
+                count += increment;
+                if (count < target) {
+                    numberElement.textContent = Math.floor(count);
+                    requestAnimationFrame(updateCount);
+                } else {
+                    numberElement.textContent = target;
+                }
+            };
+
+            updateCount();
+        });
+    }
+
+    // Initialize stats animation when in view
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateStats();
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, {threshold: 0.5});
+
+    document.querySelectorAll('.stat-item').forEach(item => {
+        statsObserver.observe(item);
+    });
+
+    // Contact form handling
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitButton = this.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('submitText');
+            const submitSpinner = document.getElementById('submitSpinner');
+
+            submitText.textContent = 'Envoi en cours...';
+            submitSpinner.classList.remove('d-none');
+            submitButton.disabled = true;
+
+            try {
+                const formData = new FormData(this);
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    // Show success message
+                    const successAlert = `
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                <strong>Merci !</strong> Votre message a été envoyé avec succès.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                    contactForm.insertAdjacentHTML('afterend', successAlert);
+                    this.reset();
+                } else {
+                    throw new Error('Erreur lors de l\'envoi du formulaire');
+                }
+            } catch (error) {
+                console.error(error);
+                // Show error message
+                const errorAlert = `
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            <strong>Erreur !</strong> Une erreur est survenue. Veuillez réessayer plus tard.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                contactForm.insertAdjacentHTML('afterend', errorAlert);
+            } finally {
+                submitText.textContent = 'Envoyer la demande';
+                submitSpinner.classList.add('d-none');
+                submitButton.disabled = false;
+            }
+        });
+    }
+
+    // Add hover effect to cards
+    document.querySelectorAll('.feature-card, .testimonial-card').forEach(card => {
+        card.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-10px)';
+            this.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+        });
+        card.addEventListener('mouseleave', function () {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+        });
+    });
+</script>
+</body>
+</html>
