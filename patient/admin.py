@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 
-from patient.models import Platform, Patient, PatientHistorique
+from patient.models import Platform, Patient, PatientHistorique, ContactMessage
 
 
 @admin.register(Platform)
@@ -16,6 +16,7 @@ class PlatformAdmin(admin.ModelAdmin):
     def show_api_key(self, obj):
         """Affiche la clé API en lecture seule avec protection"""
         return mark_safe(f'<span style="font-weight: bold; color: red;">{obj.api_key}</span>')
+
     show_api_key.short_description = "API Key"
 
     fieldsets = (
@@ -81,6 +82,18 @@ class PatientAdmin(admin.ModelAdmin):
 
 @admin.register(PatientHistorique)
 class PatientHistoriqueAdmin(admin.ModelAdmin):
-    list_display = ('patient', 'date_debut', 'date_fin', 'adresse', 'contact', 'profession', 'employeur', 'situation_matrimoniale')
+    list_display = (
+    'patient', 'date_debut', 'date_fin', 'adresse', 'contact', 'profession', 'employeur', 'situation_matrimoniale')
     search_fields = ('patient__nom', 'patient__prenoms', 'adresse', 'contact', 'profession')
     ordering = ['-date_debut']
+
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'institution', 'created_at', 'is_read')
+    list_filter = ('is_read', 'created_at')
+    search_fields = ('name', 'email', 'institution', 'message')
+    readonly_fields = ('name', 'email', 'institution', 'phone', 'message', 'created_at')
+
+    def has_add_permission(self, request):
+        return False  # on empêche la création depuis l'admin

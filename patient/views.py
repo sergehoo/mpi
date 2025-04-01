@@ -1,9 +1,48 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
+
+from patient.models import ContactMessage
 
 
 # Create your views here.
+
+@require_POST
+def contact_view(request):
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return JsonResponse({'success': False, 'message': 'Requête non autorisée'}, status=400)
+
+    data = request.POST
+
+    name = data.get('name', '').strip()
+    institution = data.get('institution', '').strip()
+    email = data.get('email', '').strip()
+    phone = data.get('phone', '').strip()
+    message = data.get('message', '').strip()
+
+    if not name or not institution or not email or not message:
+        return JsonResponse({'success': False, 'message': 'Veuillez remplir tous les champs requis.'}, status=400)
+
+    try:
+        validate_email(email)
+    except ValidationError:
+        return JsonResponse({'success': False, 'message': 'Adresse email invalide.'}, status=400)
+
+    # Enregistrement en base
+    ContactMessage.objects.create(
+        name=name,
+        institution=institution,
+        email=email,
+        phone=phone,
+        message=message
+    )
+
+    return JsonResponse({'success': True, 'message': 'Merci ! Votre message a été reçu.'})
+
 
 class Landing(TemplateView):
     template_name = "pages/landing.html"

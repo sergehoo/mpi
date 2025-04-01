@@ -18,7 +18,8 @@ urlpatterns = [
                   path('platform/token/', PlatformTokenView.as_view(), name='platform_token'),
                   path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
                   path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-                  path('', Landing.as_view(), name='landing')
+                  path('', Landing.as_view(), name='landing'),
+                  path('contact/', contact_view, name='contact'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:

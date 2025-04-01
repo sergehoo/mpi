@@ -24,15 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY='django-insecure-o2pm5!*wcn74s@$$_0cqe8zu&m&nx7zunmcy_#owq_92oe%i83'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-raw_debug = os.environ.get('DEBUG')
-if raw_debug is None:
-    raise RuntimeError("DEBUG must be set in environment variables.")
-
-DEBUG = raw_debug.lower() in ['true', '1', 'yes']
-# DEBUG = True
+# raw_debug = os.environ.get('DEBUG')
+# if raw_debug is None:
+#     raise RuntimeError("DEBUG must be set in environment variables.")
+#
+# DEBUG = raw_debug.lower() in ['true', '1', 'yes']
+DEBUG = True
 
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='localhost').split(',')

@@ -158,3 +158,22 @@ class PlatformAccessLog(models.Model):
     action = models.CharField(max_length=50,db_index=True)  # ex: "read", "create", "update"
     date = models.DateTimeField(auto_now_add=True,db_index=True)
     ip = models.GenericIPAddressField(null=True, blank=True,db_index=True)
+
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=255)
+    institution = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True, null=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Message de contact"
+        verbose_name_plural = "Messages de contact"
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"

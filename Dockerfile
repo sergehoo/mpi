@@ -42,4 +42,5 @@ EXPOSE 8000
 
 # Start the application using Gunicorn
 CMD ["gunicorn", "mpi.wsgi:application", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
+#CMD ["gunicorn", "mpi.wsgi:application","--env", "DJANGO_SETTINGS_MODULE=mpi.settings.prod", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
 
